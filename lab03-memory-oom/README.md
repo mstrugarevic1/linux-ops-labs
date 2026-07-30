@@ -2,32 +2,36 @@
 
 ## Scenario
 
-A Python process allocates memory until the container memory limit kills it.
+A container exits after rapid memory growth. Investigate what can be observed before the kill and what evidence remains afterward.
 
-## Start
+## User Impact
+
+The service disappears abruptly and may restart depending on the runtime policy.
+
+## Initial Symptoms
 
 ```sh
 make lab03-start
-```
-
-## Symptoms
-
-```sh
 make lab03-logs
 docker compose -f lab03-memory-oom/compose.yaml ps -a
 ```
 
 ## Investigation Goals
 
-- Before the kill, inspect process memory and cgroup usage.
-- After the kill, inspect `OOMKilled`, exit code, and logs.
-- Use logs to correlate allocation growth with termination.
+- Before termination, compare process RSS with cgroup memory usage.
+- After termination, inspect exit code, OOM state, and recent logs.
+- Distinguish current RSS from maximum resident set size reported by the app.
+- Note Docker Desktop versus native Linux cgroup reporting differences.
 
-## Hints
+## Useful Commands
 
-1. Enter quickly with `make lab03-shell`.
-2. Check `ps -o pid,rss,comm,args`.
-3. Check cgroup memory files under `/sys/fs/cgroup`.
+```sh
+make lab03-shell
+ps -o pid,rss,vsz,comm,args
+cat /sys/fs/cgroup/memory.current 2>/dev/null || cat /sys/fs/cgroup/memory/memory.usage_in_bytes
+cat /sys/fs/cgroup/memory.max 2>/dev/null || cat /sys/fs/cgroup/memory/memory.limit_in_bytes
+docker inspect lab03-memory-oom-app-1 --format '{{.State.OOMKilled}} {{.State.ExitCode}}'
+```
 
 ## Cleanup
 

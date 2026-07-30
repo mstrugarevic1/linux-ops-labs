@@ -2,33 +2,38 @@
 
 ## Scenario
 
-Several workers continuously write to disk using synchronous writes.
+A worker container becomes latency-heavy while doing local file writes. The workload is bounded, but it is designed to create visible synchronous write pressure.
 
-## Start
+## User Impact
+
+The service appears alive but spends much of its time waiting on storage.
+
+## Initial Symptoms
 
 ```sh
 make lab02-start
-```
-
-## Symptoms
-
-```sh
 make lab02-logs
 make lab02-shell
 ```
 
 ## Investigation Goals
 
-- Identify writer processes.
-- Compare process states.
+- Identify the writer processes.
+- Compare process states and system wait behavior.
 - Measure per-process write pressure.
-- Inspect the writer's `/proc/<pid>/io`.
+- Inspect `/proc/<pid>/io` for a writer process.
 
-## Hints
+## Useful Commands
 
-1. Start with `ps -eo pid,stat,comm,args`.
-2. Use `pidstat -d 1` and `iostat 1` if available.
-3. Pick one `dd` PID and inspect `/proc/<pid>/io`.
+```sh
+ps -eo pid,stat,comm,args
+vmstat 1
+pidstat -d 1
+iostat 1
+cat /proc/<pid>/io
+```
+
+`pidstat` and `iostat` may not be installed in every base image. `/proc/<pid>/io`, `ps`, and `vmstat` are enough to continue.
 
 ## Cleanup
 

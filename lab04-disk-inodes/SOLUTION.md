@@ -15,7 +15,9 @@ df -h /data
 du -sh /data
 ```
 
-Fix and verify:
+Expected observation: `df -h /data` shows no free space while `du -sh /data` accounts for files under `/data`.
+
+Clean up:
 
 ```sh
 make lab04-clean
@@ -30,7 +32,9 @@ df -i /data
 find /data/files -type f | wc -l
 ```
 
-Fix and verify:
+Expected observation: `df -i /data` shows inode exhaustion even if byte usage is not the limiting factor.
+
+Clean up:
 
 ```sh
 make lab04-clean
@@ -45,7 +49,9 @@ for p in /proc/[0-9]*; do for fd in "$p"/fd/*; do readlink "$fd" 2>/dev/null; do
 df -h /data
 ```
 
-Fix and verify:
+Expected observation: a process still has an fd pointing at a deleted file. Cleanup closes the fd by removing the container.
+
+Clean up:
 
 ```sh
 make lab04-clean

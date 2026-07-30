@@ -2,9 +2,15 @@
 
 ## Scenario
 
-This lab has three independent filesystem failures.
+This lab contains three independent filesystem incidents. Run only one scenario at a time so the evidence stays clear.
 
-## Start One Scenario
+## User Impact
+
+Applications may fail writes, create no new files, or report confusing disk usage after files were deleted.
+
+## Initial Symptoms
+
+Start one scenario:
 
 ```sh
 make lab04-disk
@@ -12,25 +18,31 @@ make lab04-inodes
 make lab04-deleted-file
 ```
 
-Run one at a time.
+Then inspect the matching service:
+
+```sh
+make lab04-logs
+make lab04-shell SERVICE=disk
+```
+
+Use `SERVICE=inodes` or `SERVICE=deleted-file` for the scenario you started.
 
 ## Investigation Goals
 
-- Disk: prove `/data` has no free space.
-- Inodes: prove `/data` has no free inodes.
-- Deleted file: find a deleted file still held open by a process.
+- Disk full: prove `/data` has no free bytes.
+- Inode exhaustion: prove `/data` has no free inodes.
+- Deleted-open file: find a deleted path still held open by a process.
+- Verify each scenario independently.
 
-## Hints
+## Useful Commands
 
 ```sh
-make lab04-shell SERVICE=disk
 df -h /data
+du -sh /data
 df -i /data
 find /data -type f | wc -l
 for p in /proc/[0-9]*; do for fd in "$p"/fd/*; do readlink "$fd" 2>/dev/null; done; done | grep deleted
 ```
-
-Change `SERVICE=` to `inodes` or `deleted-file` for the scenario you started.
 
 ## Cleanup
 

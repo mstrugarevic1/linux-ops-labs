@@ -2,7 +2,7 @@
 
 ## Root Cause
 
-The broken workload starts six loops of `dd ... oflag=sync`, forcing each small write to wait on storage.
+The broken workload starts six loops of `dd ... oflag=sync`. Each worker writes 32 MiB in 64 KiB chunks and forces every chunk through synchronous write semantics, so the container creates sustained write pressure without needing a large data set.
 
 ## Walkthrough
 
@@ -15,7 +15,15 @@ iostat 1
 cat /proc/<dd-pid>/io
 ```
 
-Expected observation: multiple active `dd` processes and sustained write pressure. Exact values depend on Docker Desktop, filesystem, and host storage.
+Expected observations:
+
+- `ps` shows multiple `dd` children under the Python process.
+- `vmstat 1` may show I/O wait or blocked processes depending on the host.
+- `pidstat -d 1` shows per-process write throughput when available.
+- `iostat 1` shows device-level write activity when available.
+- `/proc/<pid>/io` shows increasing `write_bytes` for an active writer.
+
+Exact values depend on Docker Desktop, filesystem, and host storage. If `pidstat` or `iostat` is missing, use `ps`, `vmstat`, and `/proc/<pid>/io`.
 
 ## Fix
 

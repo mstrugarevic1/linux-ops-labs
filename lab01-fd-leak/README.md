@@ -2,17 +2,16 @@
 
 ## Scenario
 
-A small Python HTTP service becomes unreliable after enough traffic.
+An internal HTTP service becomes unreliable after running under light traffic for a short time. Your task is to collect evidence before applying the fix.
 
-## Start
+## User Impact
+
+Health checks and normal requests may begin failing even though the process is still running.
+
+## Initial Symptoms
 
 ```sh
 make lab01-start
-```
-
-## Symptoms
-
-```sh
 make lab01-logs
 curl -s http://localhost:8001/health
 curl -s http://localhost:8001/fds
@@ -20,16 +19,19 @@ curl -s http://localhost:8001/fds
 
 ## Investigation Goals
 
-- Find the open-file limit for PID 1.
-- Count open descriptors.
+- Find the open-file limit for the service process.
+- Count open descriptors over time.
 - Identify repeated descriptor targets.
-- Explain why requests begin failing.
+- Explain why requests eventually fail.
 
-## Hints
+## Useful Commands
 
-1. Inspect `/proc/1/limits`.
-2. Compare `ls /proc/1/fd | wc -l` over time.
-3. Use `lsof -p 1`.
+```sh
+make lab01-shell
+cat /proc/1/limits
+ls /proc/1/fd | wc -l
+lsof -p 1
+```
 
 ## Cleanup
 

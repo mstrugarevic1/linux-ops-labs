@@ -2,34 +2,34 @@
 
 ## Scenario
 
-A workload creates row-lock contention and then exhausts the `app` user's MySQL connection limit.
+An internal MySQL-backed job becomes blocked, then new application sessions begin failing. Observer access should still work while the application user is exhausted.
 
-## Start
+## User Impact
+
+Requests depending on the application database user hang or fail, while database administration may still be possible through a separate account.
+
+## Initial Symptoms
 
 ```sh
 make lab05-start
-```
-
-## Symptoms
-
-```sh
 make lab05-logs
 make lab05-db
 ```
 
 ## Investigation Goals
 
-- Find the transaction holding the row lock.
-- Find transactions waiting on that lock.
-- Confirm app-user connection exhaustion.
-- Inspect MySQL counters and configured limits.
+- Find sessions blocked on a row.
+- Identify the session holding the lock.
+- Confirm application-user connection exhaustion.
+- Compare global connection count with per-user connection limits.
 
-## Hints
+## Useful Commands
 
-1. Query `information_schema.processlist`.
-2. Try `performance_schema.data_lock_waits`.
-3. Read `SHOW ENGINE INNODB STATUS`.
-4. Compare active app sessions with `MAX_USER_CONNECTIONS`.
+```sh
+make lab05-db
+docker compose -f lab05-mysql-contention/compose.yaml exec db mysql -uadmin -plab -e "SELECT id,user,db,command,time,state,info FROM information_schema.processlist ORDER BY id"
+docker compose -f lab05-mysql-contention/compose.yaml exec db mysql -uadmin -plab -e "SHOW ENGINE INNODB STATUS\G"
+```
 
 ## Cleanup
 

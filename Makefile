@@ -1,6 +1,6 @@
 SHELL := /bin/sh
 
-.PHONY: help \
+.PHONY: help smoke clean-all \
 	lab01-start lab01-logs lab01-shell lab01-clean lab01-fix lab01-reset \
 	lab02-start lab02-logs lab02-shell lab02-clean lab02-fix lab02-reset \
 	lab03-start lab03-logs lab03-shell lab03-clean lab03-fix lab03-reset \
@@ -27,12 +27,19 @@ help:
 		'  make labNN-fix         apply the minimal fix patch, where available' \
 		'  make labNN-reset       reverse the fix patch, where available' \
 		'  make labNN-clean       remove containers and volumes' \
+		'  make smoke             syntax-check Python lab files' \
+		'  make clean-all         remove all lab containers and volumes' \
 		'' \
 		'Lab04 scenarios:' \
 		'  make lab04-disk' \
 		'  make lab04-inodes' \
 		'  make lab04-deleted-file' \
 		'  make lab04-shell SERVICE=disk|inodes|deleted-file'
+
+smoke:
+	python3 -m py_compile lab01-fd-leak/app.py lab02-blocked-io/app.py lab03-memory-oom/app.py lab05-mysql-contention/app.py lab06-retry-storm/client.py lab06-retry-storm/server.py
+
+clean-all: lab01-clean lab02-clean lab03-clean lab04-clean lab05-clean lab06-clean
 
 lab01-start:
 	$(LAB01) up --build -d
