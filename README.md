@@ -39,18 +39,28 @@ make lab01-logs
 make lab01-clean
 ```
 
-Start with each lab's `README.md`. Open `SOLUTION.md` only when you want the walkthrough and fix.
+Use the same workflow for most labs:
+
+```sh
+make labNN-start
+make labNN-logs
+make labNN-shell
+make labNN-clean
+```
+
+Each lab contains a `README.md` with the scenario and a `SOLUTION.md` with the walkthrough and fix.
 
 ## Lab Catalog
 
-| Lab | Incident | Start | Docs |
-| --- | --- | --- | --- |
-| 01 | HTTP service becomes unreliable under light traffic | `make lab01-start` | [README](lab01-fd-leak/README.md), [solution](lab01-fd-leak/SOLUTION.md) |
-| 02 | Worker service causes sustained local write pressure | `make lab02-start` | [README](lab02-blocked-io/README.md), [solution](lab02-blocked-io/SOLUTION.md) |
-| 03 | Container exits after rapid memory growth | `make lab03-start` | [README](lab03-memory-oom/README.md), [solution](lab03-memory-oom/SOLUTION.md) |
-| 04 | Filesystem incidents: full disk, inode exhaustion, deleted-open file | `make lab04-disk` | [README](lab04-disk-inodes/README.md), [solution](lab04-disk-inodes/SOLUTION.md) |
-| 05 | MySQL workload becomes blocked and rejects application sessions | `make lab05-start` | [README](lab05-mysql-contention/README.md), [solution](lab05-mysql-contention/SOLUTION.md) |
-| 06 | Client traffic surges while a dependency is unhealthy | `make lab06-start` | [README](lab06-retry-storm/README.md), [solution](lab06-retry-storm/SOLUTION.md) |
+| Lab | Incident |
+| --- | --- |
+| [01 — File Descriptor Leak](./lab01-fd-leak) | HTTP service becomes unreliable under light traffic |
+| [02 — Blocked I/O](./lab02-blocked-io) | Worker service causes sustained local write pressure |
+| [03 — Memory OOM](./lab03-memory-oom) | Container exits after rapid memory growth |
+| [04 — Disk and Inodes](./lab04-disk-inodes) | Filesystem incidents: full disk, inode exhaustion, deleted-open file |
+| [05 — MySQL Contention](./lab05-mysql-contention) | MySQL workload becomes blocked and rejects application sessions |
+| [06 — Retry Storm](./lab06-retry-storm) | Client traffic surges while a dependency is unhealthy |
+| [08 — CPU Throttling](./lab08-cpu-throttling) | HTTP service is up but request latency becomes inconsistent |
 
 Useful tool mapping: [docs/toolbox.md](docs/toolbox.md).
 

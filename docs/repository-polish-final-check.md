@@ -1,5 +1,62 @@
 # Repository Polish Final Check
 
+## Lab08 CPU Throttling Addendum
+
+### Lab08 Files Added
+
+- `lab08-cpu-throttling/README.md`
+- `lab08-cpu-throttling/SOLUTION.md`
+- `lab08-cpu-throttling/compose.yaml`
+- `lab08-cpu-throttling/app.py`
+- `lab08-cpu-throttling/fix.patch`
+
+### Lab08 Files Changed
+
+- `Makefile`
+- `README.md`
+- `docs/repository-polish-final-check.md`
+
+### Lab08 What Improved
+
+- Added a safe local Docker Compose lab for CPU throttling.
+- Workload uses only the Python standard library and the stock `python:3.12-slim` image.
+- Container is bounded with `cpus: 0.25`, `mem_limit: 128m`, and `pids_limit: 64`.
+- `/health` confirms the service is up.
+- `/work` performs bounded CPU work.
+- `SOLUTION.md` documents Docker status, Docker stats, cgroup `cpu.stat`, cgroup v2 notes, `/proc`, optional `top`/`ps`, latency checks, fix, and verification.
+- `fix.patch` raises the CPU allocation to `1.0` CPU.
+
+### Lab08 Validation Commands Run
+
+- `make help` - passed.
+- `make smoke` - passed.
+- `docker compose -f lab08-cpu-throttling/compose.yaml config` - passed with broken lab state restored to `cpus: 0.25`.
+- `git apply --check lab08-cpu-throttling/fix.patch` - passed.
+- `git apply lab08-cpu-throttling/fix.patch` - passed.
+- `git apply -R --check lab08-cpu-throttling/fix.patch` - passed.
+- `git apply -R lab08-cpu-throttling/fix.patch` - passed.
+- `make lab08-clean` - passed before runtime validation.
+- `make lab08-start` - passed.
+- `docker compose -f lab08-cpu-throttling/compose.yaml ps` - passed; app container was running on port `8008`.
+- `curl -s http://localhost:8008/health` - passed, returned `{"status": "ok"}`.
+- `curl -s http://localhost:8008/work` - passed, returned bounded work result with about `1118.3` ms app-reported elapsed time.
+- `docker compose -f lab08-cpu-throttling/compose.yaml logs --tail=20` - passed.
+- `make lab08-logs` - produced expected logs; interrupted intentionally because the target follows logs.
+- `docker compose -f lab08-cpu-throttling/compose.yaml exec app cat /sys/fs/cgroup/cpu.stat` - passed and showed throttling counters including `nr_throttled`.
+- `make lab08-clean` - passed after runtime validation.
+- `make lab08-fix` - passed.
+- `make lab08-reset` - passed and restored the broken lab state.
+- `git diff --check` - passed.
+
+### Lab08 Remaining Limitations
+
+- Exact `/work` latency and throttling counters vary by host, Docker runtime, and CPU scheduler.
+- Minimal Python image may not include `top` or `ps`; the lab documents `/proc` and cgroup files as the reliable path.
+
+### Lab08 Final Recommendation
+
+Ready to commit.
+
 ## Files Changed
 
 - `Makefile`

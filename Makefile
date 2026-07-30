@@ -6,7 +6,8 @@ SHELL := /bin/sh
 	lab03-start lab03-logs lab03-shell lab03-clean lab03-fix lab03-reset \
 	lab04-start lab04-disk lab04-inodes lab04-deleted-file lab04-logs lab04-shell lab04-clean \
 	lab05-start lab05-logs lab05-shell lab05-db lab05-clean lab05-fix lab05-reset \
-	lab06-start lab06-logs lab06-shell lab06-clean lab06-fix lab06-reset
+	lab06-start lab06-logs lab06-shell lab06-clean lab06-fix lab06-reset \
+	lab08-start lab08-logs lab08-shell lab08-clean lab08-fix lab08-reset
 
 LAB01 = docker compose -f lab01-fd-leak/compose.yaml
 LAB02 = docker compose -f lab02-blocked-io/compose.yaml
@@ -14,6 +15,7 @@ LAB03 = docker compose -f lab03-memory-oom/compose.yaml
 LAB04 = docker compose -f lab04-disk-inodes/compose.yaml
 LAB05 = docker compose -f lab05-mysql-contention/compose.yaml
 LAB06 = docker compose -f lab06-retry-storm/compose.yaml
+LAB08 = docker compose -f lab08-cpu-throttling/compose.yaml
 SERVICE ?= disk
 
 help:
@@ -37,9 +39,9 @@ help:
 		'  make lab04-shell SERVICE=disk|inodes|deleted-file'
 
 smoke:
-	python3 -m py_compile lab01-fd-leak/app.py lab02-blocked-io/app.py lab03-memory-oom/app.py lab05-mysql-contention/app.py lab06-retry-storm/client.py lab06-retry-storm/server.py
+	python3 -m py_compile lab01-fd-leak/app.py lab02-blocked-io/app.py lab03-memory-oom/app.py lab05-mysql-contention/app.py lab06-retry-storm/client.py lab06-retry-storm/server.py lab08-cpu-throttling/app.py
 
-clean-all: lab01-clean lab02-clean lab03-clean lab04-clean lab05-clean lab06-clean
+clean-all: lab01-clean lab02-clean lab03-clean lab04-clean lab05-clean lab06-clean lab08-clean
 
 lab01-start:
 	$(LAB01) up --build -d
@@ -163,3 +165,23 @@ lab06-fix:
 lab06-reset:
 	git apply -R --check lab06-retry-storm/fix.patch
 	git apply -R lab06-retry-storm/fix.patch
+
+lab08-start:
+	$(LAB08) up -d
+
+lab08-logs:
+	$(LAB08) logs -f --tail=80
+
+lab08-shell:
+	$(LAB08) exec app sh
+
+lab08-clean:
+	$(LAB08) down -v --remove-orphans
+
+lab08-fix:
+	git apply --check lab08-cpu-throttling/fix.patch
+	git apply lab08-cpu-throttling/fix.patch
+
+lab08-reset:
+	git apply -R --check lab08-cpu-throttling/fix.patch
+	git apply -R lab08-cpu-throttling/fix.patch
