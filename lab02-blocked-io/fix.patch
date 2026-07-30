@@ -1,21 +1,23 @@
 diff --git a/lab02-blocked-io/app.py b/lab02-blocked-io/app.py
 --- a/lab02-blocked-io/app.py
 +++ b/lab02-blocked-io/app.py
-@@ -2,7 +2,7 @@ import os
+@@ -2,15 +2,15 @@ import os
  import subprocess
  import time
  
 -WORKERS = 6
+-BROKEN_CMD = "dd if=/dev/zero of={path} bs=64K count=512 oflag=sync conv=notrunc"
 +WORKERS = 1
- BLOCKS = 512
++FIXED_CMD = "dd if=/dev/zero of={path} bs=1M count=32 conv=fdatasync; sleep 2"
  
  
-@@ -10,7 +10,7 @@ def main():
+ def main():
+     os.makedirs("/data", exist_ok=True)
      procs = []
      for n in range(WORKERS):
          path = f"/data/worker-{n}.bin"
--        cmd = f"while :; do dd if=/dev/zero of={path} bs=64K count={BLOCKS} oflag=sync conv=notrunc; done"
-+        cmd = f"while :; do dd if=/dev/zero of={path} bs=64K count={BLOCKS} conv=notrunc; done"
+-        cmd = f"while :; do {BROKEN_CMD.format(path=path)}; done"
++        cmd = f"while :; do {FIXED_CMD.format(path=path)}; done"
          procs.append(subprocess.Popen(["sh", "-c", cmd], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL))
      while True:
          running = sum(p.poll() is None for p in procs)

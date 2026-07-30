@@ -1,7 +1,10 @@
-.PHONY: lab01-start lab01-logs lab01-shell lab01-clean lab01-fix lab01-reset \
+SHELL := /bin/sh
+
+.PHONY: help \
+	lab01-start lab01-logs lab01-shell lab01-clean lab01-fix lab01-reset \
 	lab02-start lab02-logs lab02-shell lab02-clean lab02-fix lab02-reset \
 	lab03-start lab03-logs lab03-shell lab03-clean lab03-fix lab03-reset \
-	lab04-start lab04-logs lab04-shell lab04-clean \
+	lab04-start lab04-disk lab04-inodes lab04-deleted-file lab04-logs lab04-shell lab04-clean \
 	lab05-start lab05-logs lab05-shell lab05-db lab05-clean lab05-fix lab05-reset \
 	lab06-start lab06-logs lab06-shell lab06-clean lab06-fix lab06-reset
 
@@ -11,6 +14,25 @@ LAB03 = docker compose -f lab03-memory-oom/compose.yaml
 LAB04 = docker compose -f lab04-disk-inodes/compose.yaml
 LAB05 = docker compose -f lab05-mysql-contention/compose.yaml
 LAB06 = docker compose -f lab06-retry-storm/compose.yaml
+SERVICE ?= disk
+
+help:
+	@printf '%s\n' \
+		'Linux troubleshooting labs' \
+		'' \
+		'Common targets:' \
+		'  make labNN-start       start a lab' \
+		'  make labNN-logs        follow recent logs' \
+		'  make labNN-shell       shell into the main container' \
+		'  make labNN-fix         apply the minimal fix patch, where available' \
+		'  make labNN-reset       reverse the fix patch, where available' \
+		'  make labNN-clean       remove containers and volumes' \
+		'' \
+		'Lab04 scenarios:' \
+		'  make lab04-disk' \
+		'  make lab04-inodes' \
+		'  make lab04-deleted-file' \
+		'  make lab04-shell SERVICE=disk|inodes|deleted-file'
 
 lab01-start:
 	$(LAB01) up --build -d
@@ -72,14 +94,22 @@ lab03-reset:
 	git apply -R --check lab03-memory-oom/fix.patch
 	git apply -R lab03-memory-oom/fix.patch
 
-lab04-start:
-	$(LAB04) up -d
+lab04-start: lab04-disk
+
+lab04-disk:
+	$(LAB04) up -d disk
+
+lab04-inodes:
+	$(LAB04) up -d inodes
+
+lab04-deleted-file:
+	$(LAB04) up -d deleted-file
 
 lab04-logs:
 	$(LAB04) logs -f --tail=80
 
 lab04-shell:
-	$(LAB04) exec app sh
+	$(LAB04) exec $(SERVICE) sh
 
 lab04-clean:
 	$(LAB04) down -v --remove-orphans
@@ -94,7 +124,7 @@ lab05-shell:
 	$(LAB05) exec app sh
 
 lab05-db:
-	$(LAB05) exec db mysql -uadmin -plab -e "SHOW PROCESSLIST; SHOW ENGINE INNODB STATUS\G"
+	$(LAB05) exec db sh -c 'set -e; mysql -uadmin -plab -e "SELECT id,user,db,command,time,state,info FROM information_schema.processlist WHERE user IN ('\''app'\'','\''admin'\'') ORDER BY id; SHOW STATUS LIKE '\''Threads_connected'\''; SHOW VARIABLES LIKE '\''max_connections'\''; SELECT user,max_user_connections FROM mysql.user WHERE user IN ('\''app'\'','\''admin'\'');"; if ! mysql -uadmin -plab -e "SELECT * FROM performance_schema.data_lock_waits\G"; then echo "performance_schema.data_lock_waits unavailable"; fi; mysql -uadmin -plab -e "SHOW ENGINE INNODB STATUS\G"'
 
 lab05-clean:
 	$(LAB05) down -v --remove-orphans

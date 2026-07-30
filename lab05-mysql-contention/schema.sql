@@ -11,6 +11,8 @@ ON DUPLICATE KEY UPDATE value = VALUES(value);
 
 CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'lab';
 GRANT CONNECTION_ADMIN, PROCESS ON *.* TO 'admin'@'%';
+GRANT SELECT ON mysql.user TO 'admin'@'%';
+GRANT SELECT ON performance_schema.* TO 'admin'@'%';
 
 CREATE USER IF NOT EXISTS 'app'@'%' IDENTIFIED BY 'lab' WITH MAX_USER_CONNECTIONS 16;
 GRANT SELECT, UPDATE ON lab.* TO 'app'@'%';

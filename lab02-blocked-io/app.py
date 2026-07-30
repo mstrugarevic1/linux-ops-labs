@@ -3,7 +3,7 @@ import subprocess
 import time
 
 WORKERS = 6
-BLOCKS = 512
+BROKEN_CMD = "dd if=/dev/zero of={path} bs=64K count=512 oflag=sync conv=notrunc"
 
 
 def main():
@@ -11,7 +11,7 @@ def main():
     procs = []
     for n in range(WORKERS):
         path = f"/data/worker-{n}.bin"
-        cmd = f"while :; do dd if=/dev/zero of={path} bs=64K count={BLOCKS} oflag=sync conv=notrunc; done"
+        cmd = f"while :; do {BROKEN_CMD.format(path=path)}; done"
         procs.append(subprocess.Popen(["sh", "-c", cmd], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL))
     while True:
         running = sum(p.poll() is None for p in procs)

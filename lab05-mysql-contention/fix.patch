@@ -1,19 +1,10 @@
 diff --git a/lab05-mysql-contention/app.py b/lab05-mysql-contention/app.py
 --- a/lab05-mysql-contention/app.py
 +++ b/lab05-mysql-contention/app.py
-@@ -19,12 +19,12 @@ run("UPDATE counters SET value = 0 WHERE id = 1")
+@@ -29,5 +29,5 @@ run("UPDATE counters SET value = 0 WHERE id = 1")
  
- procs = []
--for _ in range(18):
-+for _ in range(4):
-     procs.append(spawn("SELECT SLEEP(600)"))
- 
--procs.append(spawn("START TRANSACTION; UPDATE counters SET value = value + 1 WHERE id = 1; SELECT SLEEP(600);"))
-+procs.append(spawn("START TRANSACTION; UPDATE counters SET value = value + 1 WHERE id = 1; COMMIT; SELECT SLEEP(600);"))
- 
- time.sleep(2)
--for _ in range(8):
-+for _ in range(2):
-     procs.append(spawn("UPDATE counters SET value = value + 1 WHERE id = 1"))
- 
- while True:
+ jobs = [
+-    spawn("lock-holder", "START TRANSACTION; UPDATE counters SET value = value + 1 WHERE id = 1; SELECT SLEEP(600);")
++    spawn("lock-holder", "START TRANSACTION; UPDATE counters SET value = value + 1 WHERE id = 1; COMMIT; SELECT SLEEP(600);")
+ ]
+ time.sleep(1)

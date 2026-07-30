@@ -1,10 +1,28 @@
 services:
-  app:
+  disk:
     image: python:3.12-slim
-    command: ["sh", "/lab/scripts.sh"]
+    command: ["sh", "/lab/scripts.sh", "disk"]
     mem_limit: 96m
     pids_limit: 64
     volumes:
       - ./scripts.sh:/lab/scripts.sh:ro
     tmpfs:
-      - /data:size=16m,nr_inodes=4096
+      - /data:size=16m
+  inodes:
+    image: python:3.12-slim
+    command: ["sh", "/lab/scripts.sh", "inodes"]
+    mem_limit: 96m
+    pids_limit: 64
+    volumes:
+      - ./scripts.sh:/lab/scripts.sh:ro
+    tmpfs:
+      - /data:size=64m,nr_inodes=4096
+  deleted-file:
+    image: python:3.12-slim
+    command: ["sh", "/lab/scripts.sh", "deleted-file"]
+    mem_limit: 96m
+    pids_limit: 64
+    volumes:
+      - ./scripts.sh:/lab/scripts.sh:ro
+    tmpfs:
+      - /data:size=16m

@@ -1,0 +1,61 @@
+name: smoke
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate compose files
+        run: |
+          set -eu
+          for f in lab*/compose.yaml; do
+            docker compose -f "$f" config >/dev/null
+          done
+
+      - name: Build lab images
+        run: |
+          set -eu
+          docker compose -f lab01-fd-leak/compose.yaml build
+          docker compose -f lab02-blocked-io/compose.yaml build
+          docker compose -f lab03-memory-oom/compose.yaml build
+          docker compose -f lab05-mysql-contention/compose.yaml build
+          docker compose -f lab06-retry-storm/compose.yaml build
+
+      - name: Smoke Lab01
+        run: |
+          set -eu
+          timeout 60s make lab01-start
+          sleep 3
+          curl -fsS http://localhost:8001/health
+
+      - name: Clean Lab01
+        run: make lab01-clean
+        if: always()
+
+      - name: Smoke Lab04 deleted-file only
+        run: |
+          set -eu
+          timeout 60s make lab04-deleted-file
+          sleep 2
+          docker compose -f lab04-disk-inodes/compose.yaml exec -T deleted-file sh -c 'for p in /proc/[0-9]*; do for fd in "$p"/fd/*; do readlink "$fd" 2>/dev/null; done; done | grep deleted'
+
+      - name: Clean Lab04
+        run: make lab04-clean
+        if: always()
+
+      - name: Smoke Lab06
+        run: |
+          set -eu
+          timeout 60s make lab06-start
+          sleep 3
+          curl -fsS http://localhost:8006/stats | grep requests=
+
+      - name: Clean Lab06
+        run: make lab06-clean
+        if: always()
