@@ -11,3 +11,5 @@
 | Connection exhaustion | `information_schema.processlist`, service logs, connection counters |
 | Database lock waits | `performance_schema.data_lock_waits`, `SHOW ENGINE INNODB STATUS` |
 | Retry storm | request counters, logs, `ps`, client retry configuration |
+| DNS resolution failure | `getent hosts`, `nslookup` when available, `/etc/resolv.conf`, Python `socket.gethostbyname` |
+| TCP connection churn | `/proc/net/tcp`, `ss` when available, `/proc/sys/net/ipv4/ip_local_port_range` |

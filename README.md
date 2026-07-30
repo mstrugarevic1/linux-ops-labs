@@ -60,7 +60,9 @@ Each lab contains a `README.md` with the scenario and a `SOLUTION.md` with the w
 | [04 — Disk and Inodes](./lab04-disk-inodes) | Filesystem incidents: full disk, inode exhaustion, deleted-open file |
 | [05 — MySQL Contention](./lab05-mysql-contention) | MySQL workload becomes blocked and rejects application sessions |
 | [06 — Retry Storm](./lab06-retry-storm) | Client traffic surges while a dependency is unhealthy |
-| [08 — CPU Throttling](./lab08-cpu-throttling) | HTTP service is up but request latency becomes inconsistent |
+| [07 — DNS Resolution](./lab07-dns-resolution) | Service cannot reach a healthy dependency because name resolution fails |
+| [08 — CPU Throttling](./lab08-cpu-throttling) | HTTP service is up but slow under CPU-constrained execution |
+| [09 — TCP Connection Churn](./lab09-tcp-port-exhaustion) | Client becomes unreliable due to excessive short-lived TCP connections |
 
 Useful tool mapping: [docs/toolbox.md](docs/toolbox.md).
 

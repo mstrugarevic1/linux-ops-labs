@@ -1,0 +1,10 @@
+diff --git a/lab09-tcp-port-exhaustion/app.py b/lab09-tcp-port-exhaustion/app.py
+--- a/lab09-tcp-port-exhaustion/app.py
++++ b/lab09-tcp-port-exhaustion/app.py
+@@ -6,5 +6,5 @@
+ PORT = 8000
+ SERVER = ("server", PORT)
+-BIND_SOURCE_PORTS = True
++BIND_SOURCE_PORTS = False
+ SOURCE_PORTS = range(40000, 40008)
+ REQUESTS_PER_BATCH = 80

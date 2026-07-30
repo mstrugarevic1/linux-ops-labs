@@ -1,0 +1,23 @@
+services:
+  api:
+    image: python:3.12-slim
+    command: ["python", "/app/app.py", "server"]
+    working_dir: /app
+    mem_limit: 96m
+    pids_limit: 64
+    ports:
+      - "8007:8000"
+    volumes:
+      - ./app.py:/app/app.py:ro
+  app:
+    image: python:3.12-slim
+    command: ["python", "/app/app.py", "client"]
+    working_dir: /app
+    environment:
+      TARGET_HOST: backend
+    depends_on:
+      - api
+    mem_limit: 96m
+    pids_limit: 64
+    volumes:
+      - ./app.py:/app/app.py:ro

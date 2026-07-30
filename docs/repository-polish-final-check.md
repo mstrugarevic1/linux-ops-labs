@@ -1,5 +1,65 @@
 # Repository Polish Final Check
 
+## Lab07 And Lab09 Addendum
+
+### Files Added
+
+- `lab07-dns-resolution/README.md`
+- `lab07-dns-resolution/SOLUTION.md`
+- `lab07-dns-resolution/compose.yaml`
+- `lab07-dns-resolution/app.py`
+- `lab07-dns-resolution/fix.patch`
+- `lab09-tcp-port-exhaustion/README.md`
+- `lab09-tcp-port-exhaustion/SOLUTION.md`
+- `lab09-tcp-port-exhaustion/compose.yaml`
+- `lab09-tcp-port-exhaustion/app.py`
+- `lab09-tcp-port-exhaustion/fix.patch`
+
+### Files Changed
+
+- `Makefile`
+- `README.md`
+- `docs/toolbox.md`
+- `docs/repository-polish-final-check.md`
+
+### What Improved
+
+- Added Lab07 for Docker Compose DNS name-resolution troubleshooting.
+- Added Lab09 for safe client-side TCP source-port pressure without exhausting the host ephemeral range.
+- Root README catalog now includes Labs 07, 08, and 09 in the two-column incident format.
+- Makefile now includes start/logs/shell/clean/fix/reset targets for Labs 07 and 09.
+- `make smoke` and `make clean-all` include Labs 07, 08, and 09.
+
+### Validation Commands Run
+
+- `make help` - passed.
+- `make smoke` - passed.
+- `docker compose -f lab07-dns-resolution/compose.yaml config` - passed.
+- `docker compose -f lab09-tcp-port-exhaustion/compose.yaml config` - passed.
+- `git apply --check lab07-dns-resolution/fix.patch` - passed.
+- `make lab07-fix` - passed.
+- `make lab07-reset` - passed.
+- `git apply --check lab09-tcp-port-exhaustion/fix.patch` - passed.
+- `make lab09-fix` - passed.
+- `make lab09-reset` - passed.
+- `make lab07-clean` - passed before and after runtime validation.
+- `make lab07-start` - passed.
+- `curl -s http://localhost:8007/health` - passed, returned `ok`.
+- `docker compose -f lab07-dns-resolution/compose.yaml logs --tail=30` - passed and showed `target=backend` resolution failures while the API was healthy.
+- `make lab09-clean` - passed before and after runtime validation.
+- `make lab09-start` - passed.
+- `curl -s http://localhost:8009/health` - passed, returned `ok`.
+- `docker compose -f lab09-tcp-port-exhaustion/compose.yaml logs --tail=40` - passed and showed bounded `Address already in use` client failures.
+
+### Remaining Limitations
+
+- Lab09 is a safe approximation: it exhausts a deliberately tiny client-side source-port pool, not the host ephemeral range.
+- Minimal Python images may not include `ss`, `dig`, or `nslookup`; lab docs provide Python and `/proc` alternatives.
+
+### Final Recommendation
+
+Ready to commit.
+
 ## Lab08 CPU Throttling Addendum
 
 ### Lab08 Files Added

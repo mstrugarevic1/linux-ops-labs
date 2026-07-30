@@ -7,7 +7,9 @@ SHELL := /bin/sh
 	lab04-start lab04-disk lab04-inodes lab04-deleted-file lab04-logs lab04-shell lab04-clean \
 	lab05-start lab05-logs lab05-shell lab05-db lab05-clean lab05-fix lab05-reset \
 	lab06-start lab06-logs lab06-shell lab06-clean lab06-fix lab06-reset \
-	lab08-start lab08-logs lab08-shell lab08-clean lab08-fix lab08-reset
+	lab07-start lab07-logs lab07-shell lab07-clean lab07-fix lab07-reset \
+	lab08-start lab08-logs lab08-shell lab08-clean lab08-fix lab08-reset \
+	lab09-start lab09-logs lab09-shell lab09-clean lab09-fix lab09-reset
 
 LAB01 = docker compose -f lab01-fd-leak/compose.yaml
 LAB02 = docker compose -f lab02-blocked-io/compose.yaml
@@ -15,7 +17,9 @@ LAB03 = docker compose -f lab03-memory-oom/compose.yaml
 LAB04 = docker compose -f lab04-disk-inodes/compose.yaml
 LAB05 = docker compose -f lab05-mysql-contention/compose.yaml
 LAB06 = docker compose -f lab06-retry-storm/compose.yaml
+LAB07 = docker compose -f lab07-dns-resolution/compose.yaml
 LAB08 = docker compose -f lab08-cpu-throttling/compose.yaml
+LAB09 = docker compose -f lab09-tcp-port-exhaustion/compose.yaml
 SERVICE ?= disk
 
 help:
@@ -39,9 +43,9 @@ help:
 		'  make lab04-shell SERVICE=disk|inodes|deleted-file'
 
 smoke:
-	python3 -m py_compile lab01-fd-leak/app.py lab02-blocked-io/app.py lab03-memory-oom/app.py lab05-mysql-contention/app.py lab06-retry-storm/client.py lab06-retry-storm/server.py lab08-cpu-throttling/app.py
+	python3 -m py_compile lab01-fd-leak/app.py lab02-blocked-io/app.py lab03-memory-oom/app.py lab05-mysql-contention/app.py lab06-retry-storm/client.py lab06-retry-storm/server.py lab07-dns-resolution/app.py lab08-cpu-throttling/app.py lab09-tcp-port-exhaustion/app.py
 
-clean-all: lab01-clean lab02-clean lab03-clean lab04-clean lab05-clean lab06-clean lab08-clean
+clean-all: lab01-clean lab02-clean lab03-clean lab04-clean lab05-clean lab06-clean lab07-clean lab08-clean lab09-clean
 
 lab01-start:
 	$(LAB01) up --build -d
@@ -166,6 +170,26 @@ lab06-reset:
 	git apply -R --check lab06-retry-storm/fix.patch
 	git apply -R lab06-retry-storm/fix.patch
 
+lab07-start:
+	$(LAB07) up -d
+
+lab07-logs:
+	$(LAB07) logs -f --tail=80
+
+lab07-shell:
+	$(LAB07) exec app sh
+
+lab07-clean:
+	$(LAB07) down -v --remove-orphans
+
+lab07-fix:
+	git apply --check lab07-dns-resolution/fix.patch
+	git apply lab07-dns-resolution/fix.patch
+
+lab07-reset:
+	git apply -R --check lab07-dns-resolution/fix.patch
+	git apply -R lab07-dns-resolution/fix.patch
+
 lab08-start:
 	$(LAB08) up -d
 
@@ -185,3 +209,23 @@ lab08-fix:
 lab08-reset:
 	git apply -R --check lab08-cpu-throttling/fix.patch
 	git apply -R lab08-cpu-throttling/fix.patch
+
+lab09-start:
+	$(LAB09) up -d
+
+lab09-logs:
+	$(LAB09) logs -f --tail=80
+
+lab09-shell:
+	$(LAB09) exec client sh
+
+lab09-clean:
+	$(LAB09) down -v --remove-orphans
+
+lab09-fix:
+	git apply --check lab09-tcp-port-exhaustion/fix.patch
+	git apply lab09-tcp-port-exhaustion/fix.patch
+
+lab09-reset:
+	git apply -R --check lab09-tcp-port-exhaustion/fix.patch
+	git apply -R lab09-tcp-port-exhaustion/fix.patch
