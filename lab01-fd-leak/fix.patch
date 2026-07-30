@@ -1,0 +1,24 @@
+diff --git a/lab01-fd-leak/app.py b/lab01-fd-leak/app.py
+--- a/lab01-fd-leak/app.py
++++ b/lab01-fd-leak/app.py
+@@ -7,9 +7,6 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+ 
+ DATA_FILE = "/tmp/lab01-data.txt"
+ PORT = 8000
+-leaked_files = []
+-
+-
+ class Handler(BaseHTTPRequestHandler):
+     def do_GET(self):
+         if self.path == "/health":
+@@ -19,7 +16,8 @@ class Handler(BaseHTTPRequestHandler):
+             self.reply(200, f"{len(os.listdir('/proc/self/fd'))}\n")
+             return
+         if self.path == "/leak":
+-            leaked_files.append(open(DATA_FILE))
+-            self.reply(200, "read one file and leaked its descriptor\n")
++            with open(DATA_FILE) as f:
++                f.read()
++            self.reply(200, "read one file and closed its descriptor\n")
+             return
+         self.reply(404, "not found\n")
