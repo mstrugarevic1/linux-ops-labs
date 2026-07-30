@@ -14,14 +14,14 @@ The labs are intentionally broken. Run them only on a local developer machine wi
 
 ## Labs
 
-| Lab | Failure mode | Primary tools | Difficulty |
+| Lab | Scenario | Start | Clean |
 | --- | --- | --- | --- |
-| 01 | File descriptor leak | `lsof`, `/proc`, `curl` | Medium |
-| 02 | Synchronous I/O pressure | `iostat`, `pidstat`, `vmstat`, `/proc/<pid>/io` | Medium |
-| 03 | Memory leak / OOM kill | `ps`, cgroups, `docker inspect`, logs | Medium |
-| 04 | Disk full, inode exhaustion, deleted-open file | `df`, `find`, `/proc/*/fd` | Medium |
-| 05 | MySQL row locks and connection exhaustion | `processlist`, `performance_schema`, InnoDB status | Hard |
-| 06 | Retry storm | `curl`, `ps`, service counters | Medium |
+| 01 | File descriptor leak | `make lab01-start` | `make lab01-clean` |
+| 02 | Synchronous I/O pressure | `make lab02-start` | `make lab02-clean` |
+| 03 | Memory leak / OOM kill | `make lab03-start` | `make lab03-clean` |
+| 04 | Disk, inode, deleted-open-file scenarios | `make lab04-disk` | `make lab04-clean` |
+| 05 | MySQL locks and connection exhaustion | `make lab05-start` | `make lab05-clean` |
+| 06 | Retry storm | `make lab06-start` | `make lab06-clean` |
 
 Start with the lab README, then check `SOLUTION.md` when you want the walkthrough.
 
