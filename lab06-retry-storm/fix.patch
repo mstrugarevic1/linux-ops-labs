@@ -1,0 +1,20 @@
+diff --git a/lab06-retry-storm/client.py b/lab06-retry-storm/client.py
+--- a/lab06-retry-storm/client.py
++++ b/lab06-retry-storm/client.py
+@@ -5,7 +5,7 @@ import urllib.error
+ import urllib.request
+ 
+ URL = "http://server:8000/"
+-THREADS = 16
++THREADS = 4
+ 
+ 
+ def worker():
+@@ -13,6 +13,7 @@ def worker():
+         try:
+             urllib.request.urlopen(URL, timeout=1).read()
+         except (OSError, urllib.error.URLError):
++            time.sleep(0.25)
+             pass
+ 
+ 

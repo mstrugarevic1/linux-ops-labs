@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    mem_limit: 128m
+    pids_limit: 64
+    volumes:
+      - lab02-data:/data
+volumes:
+  lab02-data:

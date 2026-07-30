@@ -1,0 +1,17 @@
+services:
+  db:
+    image: mysql:8.4
+    command: ["--max_connections=40", "--innodb_lock_wait_timeout=120"]
+    environment:
+      MYSQL_ROOT_PASSWORD: lab
+      MYSQL_DATABASE: lab
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    mem_limit: 512m
+    pids_limit: 128
+  app:
+    build: .
+    depends_on:
+      - db
+    mem_limit: 128m
+    pids_limit: 96

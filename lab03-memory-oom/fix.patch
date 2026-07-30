@@ -1,0 +1,11 @@
+diff --git a/lab03-memory-oom/app.py b/lab03-memory-oom/app.py
+--- a/lab03-memory-oom/app.py
++++ b/lab03-memory-oom/app.py
+@@ -9,5 +9,7 @@ def rss_mb():
+ 
+ while True:
+     chunks.append(bytearray(1024 * 1024))
++    if len(chunks) > 8:
++        chunks.pop(0)
+     print(f"allocated={len(chunks)}MiB rss={rss_mb()}MiB", flush=True)
+     time.sleep(0.2)

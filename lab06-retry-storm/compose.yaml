@@ -1,0 +1,15 @@
+services:
+  server:
+    build: .
+    command: ["python", "server.py"]
+    ports:
+      - "8006:8000"
+    mem_limit: 96m
+    pids_limit: 96
+  client:
+    build: .
+    command: ["python", "client.py"]
+    depends_on:
+      - server
+    mem_limit: 96m
+    pids_limit: 96

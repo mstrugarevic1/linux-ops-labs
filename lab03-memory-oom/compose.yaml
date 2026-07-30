@@ -1,0 +1,5 @@
+services:
+  app:
+    build: .
+    mem_limit: 96m
+    pids_limit: 64
