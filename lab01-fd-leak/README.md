@@ -10,6 +10,10 @@ Health checks and normal requests may begin failing even though the process is s
 
 ## Initial Symptoms
 
+Run the following commands from the repository root.
+
+See the [repository-level Makefile](../Makefile) for the available targets.
+
 ```sh
 make lab01-start
 make lab01-logs

@@ -10,6 +10,10 @@ The service appears alive but spends much of its time waiting on storage.
 
 ## Initial Symptoms
 
+Run the following commands from the repository root.
+
+See the [repository-level Makefile](../Makefile) for the available targets.
+
 ```sh
 make lab02-start
 make lab02-logs

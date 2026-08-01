@@ -1,10 +1,10 @@
-# Linux Troubleshooting Labs
+# Linux Ops Labs
 
-Local, Docker Compose based Linux troubleshooting labs for DevOps and SRE interview practice.
+Small Docker Compose labs for practicing Linux, networking, database, and service troubleshooting.
 
 Each lab starts a small broken workload, gives you observable symptoms, and asks you to collect evidence with standard Linux or service diagnostic tools before reading the solution.
 
-## What This Demonstrates
+## What You Practice
 
 - Process, file descriptor, memory, filesystem, and I/O investigation
 - `/proc` and cgroup inspection from inside containers
@@ -20,17 +20,14 @@ These labs inspect Linux behavior inside Docker containers. On Docker Desktop fo
 - Docker Compose v2
 - `make`
 - `curl` for selected HTTP labs
-- `python3` for `make smoke`
 
-Check your environment:
+### Optional
 
-```sh
-docker --version
-docker compose version
-make --version
-```
+- `python3` for local repository checks
 
 ## Quick Start
+
+All `make` commands must be executed from the repository root.
 
 ```sh
 make help

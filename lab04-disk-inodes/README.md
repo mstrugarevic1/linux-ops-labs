@@ -10,6 +10,10 @@ Applications may fail writes, create no new files, or report confusing disk usag
 
 ## Initial Symptoms
 
+Run the following commands from the repository root.
+
+See the [repository-level Makefile](../Makefile) for the available targets.
+
 Start one scenario:
 
 ```sh

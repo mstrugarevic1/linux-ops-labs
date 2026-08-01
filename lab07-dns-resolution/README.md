@@ -10,6 +10,10 @@ Requests that depend on the upstream service fail before any application respons
 
 ## Initial Symptoms
 
+Run the following commands from the repository root.
+
+See the [repository-level Makefile](../Makefile) for the available targets.
+
 ```sh
 make lab07-start
 make lab07-logs

@@ -10,6 +10,10 @@ The failing service receives amplified load, making recovery harder and obscurin
 
 ## Initial Symptoms
 
+Run the following commands from the repository root.
+
+See the [repository-level Makefile](../Makefile) for the available targets.
+
 ```sh
 make lab06-start
 curl -s http://localhost:8006/stats

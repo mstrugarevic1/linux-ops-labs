@@ -10,6 +10,10 @@ Requests depending on the application database user hang or fail, while database
 
 ## Initial Symptoms
 
+Run the following commands from the repository root.
+
+See the [repository-level Makefile](../Makefile) for the available targets.
+
 ```sh
 make lab05-start
 make lab05-logs
