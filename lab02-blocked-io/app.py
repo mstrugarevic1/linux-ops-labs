@@ -1,3 +1,10 @@
+"""Blocked I/O workload for the synchronous disk-write lab.
+
+It continuously runs slow sync writes so learners can observe blocked tasks,
+disk pressure, and process I/O symptoms. It is a training workload with no
+guarantee of correctness, completeness, or production suitability.
+"""
+
 import os
 import subprocess
 import time

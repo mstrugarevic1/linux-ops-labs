@@ -1,3 +1,10 @@
+"""Retry-storm client for the failed dependency lab.
+
+It repeatedly calls a failing service without backoff so learners can observe
+request amplification and noisy retry behavior. It is a training workload with
+no guarantee of correctness, completeness, or production suitability.
+"""
+
 import threading
 import time
 import urllib.error

@@ -1,3 +1,10 @@
+"""Memory pressure workload for the OOM lab.
+
+It allocates memory until the container limit is reached so learners can inspect
+RSS growth, cgroup limits, and OOM-kill evidence. It is a training workload
+with no guarantee of correctness, completeness, or production suitability.
+"""
+
 import resource
 import time
 

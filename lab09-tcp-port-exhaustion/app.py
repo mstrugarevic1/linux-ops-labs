@@ -1,3 +1,11 @@
+"""Server/client workload for the TCP port exhaustion lab.
+
+In client mode it reuses a tiny source-port range to trigger connection
+failures so learners can inspect ephemeral port pressure and TCP state. It is a
+training workload with no guarantee of correctness, completeness, or production
+suitability.
+"""
+
 import socket
 import sys
 import time

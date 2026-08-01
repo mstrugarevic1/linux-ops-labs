@@ -1,3 +1,10 @@
+"""Small HTTP app for the file-descriptor leak lab.
+
+It intentionally leaks open files so learners can inspect FD growth and
+practice diagnosing resource exhaustion. It is a training workload with no
+guarantee of correctness, completeness, or production suitability.
+"""
+
 import os
 import sys
 import time

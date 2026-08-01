@@ -1,3 +1,11 @@
+"""Server/client app for the DNS resolution lab.
+
+In server mode it exposes a health endpoint; in client mode it repeatedly
+resolves and calls a target service name so learners can diagnose broken service
+discovery. It is a training workload with no guarantee of correctness,
+completeness, or production suitability.
+"""
+
 import os
 import sys
 import time

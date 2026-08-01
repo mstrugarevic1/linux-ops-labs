@@ -1,3 +1,10 @@
+"""CPU-bound HTTP app for the throttling lab.
+
+It burns CPU in foreground and background work so learners can inspect cgroup
+throttling, latency, and CPU pressure symptoms. It is a training workload with
+no guarantee of correctness, completeness, or production suitability.
+"""
+
 import json
 import os
 import sys

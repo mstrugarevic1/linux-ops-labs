@@ -1,3 +1,10 @@
+"""Failing HTTP dependency for the retry-storm lab.
+
+It returns temporary failures and exposes request-rate stats so learners can
+measure client retry behavior. It is a training workload with no guarantee of
+correctness, completeness, or production suitability.
+"""
+
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import time
 

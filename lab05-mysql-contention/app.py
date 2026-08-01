@@ -1,3 +1,11 @@
+"""MySQL contention workload for the connection and lock lab.
+
+It creates a lock holder, lock waiters, and sleeping connections so learners can
+inspect process lists, lock waits, and connection exhaustion. It is a training
+workload with no guarantee of correctness, completeness, or production
+suitability.
+"""
+
 import subprocess
 import time
 
