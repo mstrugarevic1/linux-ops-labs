@@ -10,14 +10,14 @@ The failing service receives amplified load, making recovery harder and obscurin
 
 ## Initial Symptoms
 
-Run the following commands from the repository root.
+Run the following commands from this lab directory.
 
 See the [repository-level Makefile](../Makefile) for the available targets.
 
 ```sh
-make lab06-start
+make -C .. lab06-start
 curl -s http://localhost:8006/stats
-make lab06-shell
+make -C .. lab06-shell
 ```
 
 ## Investigation Goals
@@ -38,5 +38,5 @@ sed -n '1,200p' client.py
 ## Cleanup
 
 ```sh
-make lab06-clean
+make -C .. lab06-clean
 ```

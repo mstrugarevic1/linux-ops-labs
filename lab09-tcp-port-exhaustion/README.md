@@ -10,13 +10,13 @@ Some requests fail even though the server process is running and accepting conne
 
 ## Initial Symptoms
 
-Run the following commands from the repository root.
+Run the following commands from this lab directory.
 
 See the [repository-level Makefile](../Makefile) for the available targets.
 
 ```sh
-make lab09-start
-make lab09-logs
+make -C .. lab09-start
+make -C .. lab09-logs
 curl -s http://localhost:8009/health
 ```
 
@@ -31,7 +31,7 @@ curl -s http://localhost:8009/health
 
 ```sh
 docker compose -f lab09-tcp-port-exhaustion/compose.yaml ps
-make lab09-shell
+make -C .. lab09-shell
 cat /proc/net/tcp
 cat /proc/sys/net/ipv4/ip_local_port_range
 ```
@@ -46,5 +46,5 @@ cat /proc/sys/net/ipv4/ip_local_port_range
 ## Cleanup
 
 ```sh
-make lab09-clean
+make -C .. lab09-clean
 ```

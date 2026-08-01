@@ -10,13 +10,13 @@ The service disappears abruptly and may restart depending on the runtime policy.
 
 ## Initial Symptoms
 
-Run the following commands from the repository root.
+Run the following commands from this lab directory.
 
 See the [repository-level Makefile](../Makefile) for the available targets.
 
 ```sh
-make lab03-start
-make lab03-logs
+make -C .. lab03-start
+make -C .. lab03-logs
 docker compose -f lab03-memory-oom/compose.yaml ps -a
 ```
 
@@ -30,7 +30,7 @@ docker compose -f lab03-memory-oom/compose.yaml ps -a
 ## Useful Commands
 
 ```sh
-make lab03-shell
+make -C .. lab03-shell
 ps -o pid,rss,vsz,comm,args
 cat /sys/fs/cgroup/memory.current 2>/dev/null || cat /sys/fs/cgroup/memory/memory.usage_in_bytes
 cat /sys/fs/cgroup/memory.max 2>/dev/null || cat /sys/fs/cgroup/memory/memory.limit_in_bytes
@@ -40,5 +40,5 @@ docker inspect lab03-memory-oom-app-1 --format '{{.State.OOMKilled}} {{.State.Ex
 ## Cleanup
 
 ```sh
-make lab03-clean
+make -C .. lab03-clean
 ```

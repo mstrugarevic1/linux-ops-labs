@@ -10,14 +10,14 @@ The service appears alive but spends much of its time waiting on storage.
 
 ## Initial Symptoms
 
-Run the following commands from the repository root.
+Run the following commands from this lab directory.
 
 See the [repository-level Makefile](../Makefile) for the available targets.
 
 ```sh
-make lab02-start
-make lab02-logs
-make lab02-shell
+make -C .. lab02-start
+make -C .. lab02-logs
+make -C .. lab02-shell
 ```
 
 ## Investigation Goals
@@ -42,5 +42,5 @@ cat /proc/<pid>/io
 ## Cleanup
 
 ```sh
-make lab02-clean
+make -C .. lab02-clean
 ```

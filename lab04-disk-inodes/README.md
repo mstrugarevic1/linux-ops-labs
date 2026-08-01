@@ -10,23 +10,23 @@ Applications may fail writes, create no new files, or report confusing disk usag
 
 ## Initial Symptoms
 
-Run the following commands from the repository root.
+Run the following commands from this lab directory.
 
 See the [repository-level Makefile](../Makefile) for the available targets.
 
 Start one scenario:
 
 ```sh
-make lab04-disk
-make lab04-inodes
-make lab04-deleted-file
+make -C .. lab04-disk
+make -C .. lab04-inodes
+make -C .. lab04-deleted-file
 ```
 
 Then inspect the matching service:
 
 ```sh
-make lab04-logs
-make lab04-shell SERVICE=disk
+make -C .. lab04-logs
+make -C .. lab04-shell SERVICE=disk
 ```
 
 Use `SERVICE=inodes` or `SERVICE=deleted-file` for the scenario you started.
@@ -51,5 +51,5 @@ for p in /proc/[0-9]*; do for fd in "$p"/fd/*; do readlink "$fd" 2>/dev/null; do
 ## Cleanup
 
 ```sh
-make lab04-clean
+make -C .. lab04-clean
 ```

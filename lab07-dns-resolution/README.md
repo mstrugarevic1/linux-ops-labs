@@ -10,13 +10,13 @@ Requests that depend on the upstream service fail before any application respons
 
 ## Initial Symptoms
 
-Run the following commands from the repository root.
+Run the following commands from this lab directory.
 
 See the [repository-level Makefile](../Makefile) for the available targets.
 
 ```sh
-make lab07-start
-make lab07-logs
+make -C .. lab07-start
+make -C .. lab07-logs
 curl -s http://localhost:8007/health
 ```
 
@@ -31,7 +31,7 @@ curl -s http://localhost:8007/health
 
 ```sh
 docker compose -f lab07-dns-resolution/compose.yaml ps
-make lab07-shell
+make -C .. lab07-shell
 python - <<'PY'
 import socket
 for name in ("backend", "api"):
@@ -52,5 +52,5 @@ cat /etc/resolv.conf
 ## Cleanup
 
 ```sh
-make lab07-clean
+make -C .. lab07-clean
 ```

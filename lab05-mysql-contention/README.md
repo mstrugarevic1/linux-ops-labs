@@ -10,14 +10,14 @@ Requests depending on the application database user hang or fail, while database
 
 ## Initial Symptoms
 
-Run the following commands from the repository root.
+Run the following commands from this lab directory.
 
 See the [repository-level Makefile](../Makefile) for the available targets.
 
 ```sh
-make lab05-start
-make lab05-logs
-make lab05-db
+make -C .. lab05-start
+make -C .. lab05-logs
+make -C .. lab05-db
 ```
 
 ## Investigation Goals
@@ -30,7 +30,7 @@ make lab05-db
 ## Useful Commands
 
 ```sh
-make lab05-db
+make -C .. lab05-db
 docker compose -f lab05-mysql-contention/compose.yaml exec db mysql -uadmin -plab -e "SELECT id,user,db,command,time,state,info FROM information_schema.processlist ORDER BY id"
 docker compose -f lab05-mysql-contention/compose.yaml exec db mysql -uadmin -plab -e "SHOW ENGINE INNODB STATUS\G"
 ```
@@ -38,5 +38,5 @@ docker compose -f lab05-mysql-contention/compose.yaml exec db mysql -uadmin -pla
 ## Cleanup
 
 ```sh
-make lab05-clean
+make -C .. lab05-clean
 ```

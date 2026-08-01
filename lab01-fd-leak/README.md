@@ -10,13 +10,13 @@ Health checks and normal requests may begin failing even though the process is s
 
 ## Initial Symptoms
 
-Run the following commands from the repository root.
+Run the following commands from this lab directory.
 
 See the [repository-level Makefile](../Makefile) for the available targets.
 
 ```sh
-make lab01-start
-make lab01-logs
+make -C .. lab01-start
+make -C .. lab01-logs
 curl -s http://localhost:8001/health
 curl -s http://localhost:8001/fds
 ```
@@ -31,7 +31,7 @@ curl -s http://localhost:8001/fds
 ## Useful Commands
 
 ```sh
-make lab01-shell
+make -C .. lab01-shell
 cat /proc/1/limits
 ls /proc/1/fd | wc -l
 lsof -p 1
@@ -40,5 +40,5 @@ lsof -p 1
 ## Cleanup
 
 ```sh
-make lab01-clean
+make -C .. lab01-clean
 ```

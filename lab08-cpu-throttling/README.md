@@ -10,15 +10,15 @@ Health checks may pass, but user-facing work requests have poor and variable lat
 
 ## Initial Symptoms
 
-Run the following commands from the repository root.
+Run the following commands from this lab directory.
 
 See the [repository-level Makefile](../Makefile) for the available targets.
 
 ```sh
-make lab08-start
+make -C .. lab08-start
 curl -s http://localhost:8008/health
 time curl -s http://localhost:8008/work
-make lab08-logs
+make -C .. lab08-logs
 ```
 
 ## Investigation Goals
@@ -34,7 +34,7 @@ make lab08-logs
 ```sh
 docker compose -f lab08-cpu-throttling/compose.yaml ps
 docker stats --no-stream
-make lab08-shell
+make -C .. lab08-shell
 cat /sys/fs/cgroup/cpu.stat
 cat /sys/fs/cgroup/cpu.max 2>/dev/null || true
 cat /proc/1/stat
@@ -50,5 +50,5 @@ cat /proc/1/stat
 ## Cleanup
 
 ```sh
-make lab08-clean
+make -C .. lab08-clean
 ```
