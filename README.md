@@ -61,8 +61,6 @@ Each lab contains a `README.md` with the scenario and a `SOLUTION.md` with the w
 | [08 — CPU Throttling](./lab08-cpu-throttling) | HTTP service is up but slow under CPU-constrained execution |
 | [09 — TCP Connection Churn](./lab09-tcp-port-exhaustion) | Client becomes unreliable due to excessive short-lived TCP connections |
 
-Useful tool mapping: [docs/toolbox.md](docs/toolbox.md).
-
 ## Lab Structure
 
 Most labs contain:

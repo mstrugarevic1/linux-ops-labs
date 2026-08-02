@@ -1,6 +1,6 @@
 SHELL := /bin/sh
 
-.PHONY: help smoke clean-all \
+.PHONY: help smoke clean-all shell \
 	lab01-start lab01-logs lab01-shell lab01-clean lab01-fix lab01-reset \
 	lab02-start lab02-logs lab02-shell lab02-clean lab02-fix lab02-reset \
 	lab03-start lab03-logs lab03-shell lab03-clean lab03-fix lab03-reset \
@@ -47,6 +47,9 @@ smoke:
 
 clean-all: lab01-clean lab02-clean lab03-clean lab04-clean lab05-clean lab06-clean lab07-clean lab08-clean lab09-clean
 
+shell:
+	$(LAB04) exec disk bash -il
+
 lab01-start:
 	$(LAB01) up --build -d
 
@@ -54,7 +57,7 @@ lab01-logs:
 	$(LAB01) logs -f --tail=80
 
 lab01-shell:
-	$(LAB01) exec app sh
+	$(LAB01) exec app bash -il
 
 lab01-clean:
 	$(LAB01) down -v --remove-orphans
@@ -74,7 +77,7 @@ lab02-logs:
 	$(LAB02) logs -f --tail=80
 
 lab02-shell:
-	$(LAB02) exec app sh
+	$(LAB02) exec app bash -il
 
 lab02-clean:
 	$(LAB02) down -v --remove-orphans
@@ -94,7 +97,7 @@ lab03-logs:
 	$(LAB03) logs -f --tail=80
 
 lab03-shell:
-	$(LAB03) exec app sh
+	$(LAB03) exec app bash -il
 
 lab03-clean:
 	$(LAB03) down -v --remove-orphans
@@ -122,7 +125,7 @@ lab04-logs:
 	$(LAB04) logs -f --tail=80
 
 lab04-shell:
-	$(LAB04) exec $(SERVICE) sh
+	$(LAB04) exec $(SERVICE) bash -il
 
 lab04-clean:
 	$(LAB04) down -v --remove-orphans
@@ -134,7 +137,7 @@ lab05-logs:
 	$(LAB05) logs -f --tail=80
 
 lab05-shell:
-	$(LAB05) exec app sh
+	$(LAB05) exec app bash -il
 
 lab05-db:
 	$(LAB05) exec db sh -c 'set -e; mysql -uadmin -plab -e "SELECT id,user,db,command,time,state,info FROM information_schema.processlist WHERE user IN ('\''app'\'','\''admin'\'') ORDER BY id; SHOW STATUS LIKE '\''Threads_connected'\''; SHOW VARIABLES LIKE '\''max_connections'\''; SELECT user,max_user_connections FROM mysql.user WHERE user IN ('\''app'\'','\''admin'\'');"; if ! mysql -uadmin -plab -e "SELECT * FROM performance_schema.data_lock_waits\G"; then echo "performance_schema.data_lock_waits unavailable"; fi; mysql -uadmin -plab -e "SHOW ENGINE INNODB STATUS\G"'
@@ -157,7 +160,7 @@ lab06-logs:
 	$(LAB06) logs -f --tail=80
 
 lab06-shell:
-	$(LAB06) exec client sh
+	$(LAB06) exec client bash -il
 
 lab06-clean:
 	$(LAB06) down -v --remove-orphans
@@ -177,7 +180,7 @@ lab07-logs:
 	$(LAB07) logs -f --tail=80
 
 lab07-shell:
-	$(LAB07) exec app sh
+	$(LAB07) exec app bash -il
 
 lab07-clean:
 	$(LAB07) down -v --remove-orphans
@@ -197,7 +200,7 @@ lab08-logs:
 	$(LAB08) logs -f --tail=80
 
 lab08-shell:
-	$(LAB08) exec app sh
+	$(LAB08) exec app bash -il
 
 lab08-clean:
 	$(LAB08) down -v --remove-orphans
@@ -217,7 +220,7 @@ lab09-logs:
 	$(LAB09) logs -f --tail=80
 
 lab09-shell:
-	$(LAB09) exec client sh
+	$(LAB09) exec client bash -il
 
 lab09-clean:
 	$(LAB09) down -v --remove-orphans
